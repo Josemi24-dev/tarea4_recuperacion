@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/../app/Controllers/AuthController.php';
+$auth = new AuthController();
+
 $url = $_SERVER['REQUEST_URI'];
 $uri = explode('?', $url)[0]; // Elimina los parámetros
 
@@ -13,7 +16,28 @@ switch ($uri) {
         require_once __DIR__ . '/../scripts/crear_bd.php';
         break;
 
+    case '/login':
+    $_SERVER['REQUEST_METHOD'] === 'POST'
+        ? $auth->login()
+        : $auth->loginForm();
+    break;
 
+case '/registro':
+    $_SERVER['REQUEST_METHOD'] === 'POST'
+        ? $auth->register()
+        : $auth->registerForm();
+    break;
+
+case '/logout':
+    $auth->logout();
+    break;
+
+case (preg_match('#^/usuario/(\d+)$#', $uri, $matches) ? true : false):
+    $id = (int) $matches[1];
+    require_once __DIR__ . '/../app/Controllers/UsuarioController.php';
+    $controller = new UsuarioController();
+    $controller->mostrar($id);
+    break;
 
     default:
         http_response_code(404);
