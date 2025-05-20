@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../app/Controllers/AuthController.php';
+require_once __DIR__ . '/../app/Controllers/SalaController.php';
 $auth = new AuthController();
+$salaCtrl = new SalaController();
 
 $url = $_SERVER['REQUEST_URI'];
 $uri = explode('?', $url)[0]; // Elimina los parámetros
@@ -30,6 +32,10 @@ case '/registro':
 
 case '/logout':
     $auth->logout();
+    break;
+
+case '/salas':
+    $salaCtrl->listar();
     break;
 
 case (preg_match('#^/usuario/(\d+)$#', $uri, $matches) ? true : false):
