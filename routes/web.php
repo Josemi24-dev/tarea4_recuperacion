@@ -57,6 +57,12 @@ case (preg_match('#^/sala/(\d+)$#', $uri, $matches) ? true : false):
     $salaCtrl->verAsientos((int)$matches[1]);
     break;
 
+case '/cuenta-cine':
+    $db = Database::connect();
+    $saldo = $db->query("SELECT saldo_total FROM cuenta_cine WHERE id = 1")->fetchColumn();
+    echo "<h2>Cuenta del Cine</h2><p>Recaudado: €$saldo</p>";
+    break;
+
     default:
         http_response_code(404);
         require_once __DIR__ . '/../resources/views/404.php';

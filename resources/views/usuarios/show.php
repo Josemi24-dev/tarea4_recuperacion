@@ -9,3 +9,27 @@
 
 <a href="/salas">🎟️ Comprar entradas</a><br>
 <a href="/logout">🔓 Cerrar sesión</a>
+
+<hr>
+<h3>🎟️ Entradas compradas</h3>
+
+<?php if (empty($entradas)): ?>
+    <p>No has comprado ninguna entrada todavía.</p>
+<?php else: ?>
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>Fecha</th>
+            <th>Sala</th>
+            <th>Asiento</th>
+            <th>Precio</th>
+        </tr>
+        <?php foreach ($entradas as $e): ?>
+            <tr>
+                <td><?= $e['fecha_compra'] ?></td>
+                <td><?= $e['sala'] ?></td>
+                <td><?= $e['fila'] ?><?= $e['numero'] ?></td>
+                <td>€<?= $e['precio'] ?></td>
+            </tr>
+        <?php endforeach; ?>
+    </table>
+<?php endif; ?>
