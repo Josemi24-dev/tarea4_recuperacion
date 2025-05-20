@@ -9,7 +9,7 @@ class UsuarioController
     {
         session_start();
 
-        if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_id'] !== $id) {
+        if (!isset($_SESSION['usuario_id']) || (int)$_SESSION['usuario_id'] !== (int)$id) {
             http_response_code(403);
             echo "Acceso no autorizado.";
             exit;

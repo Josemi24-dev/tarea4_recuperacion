@@ -42,6 +42,10 @@ case '/resumen-compra':
     $salaCtrl->resumenCompra();
     break;
 
+case '/confirmar-compra':
+    $salaCtrl->confirmarCompra();
+    break;
+
 case (preg_match('#^/usuario/(\d+)$#', $uri, $matches) ? true : false):
     $id = (int) $matches[1];
     require_once __DIR__ . '/../app/Controllers/UsuarioController.php';

@@ -23,7 +23,7 @@ class AuthController
         $usuario = $stmt->fetch();
 
         if ($usuario && password_verify($password, $usuario['password'])) {
-            $_SESSION['usuario_id'] = $usuario['id'];
+            $_SESSION['usuario_id'] = (int) $usuario['id'];
             header("Location: /usuario/{$usuario['id']}");
             exit;
         } else {
