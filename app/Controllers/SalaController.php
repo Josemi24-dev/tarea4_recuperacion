@@ -26,4 +26,42 @@ class SalaController
 
         require __DIR__ . '/../../resources/views/salas/index.php';
     }
+
+    public function verAsientos(int $sala_id): void
+    {
+        session_start();
+        $db = Database::connect();
+
+        $stmt = $db->prepare("SELECT * FROM asientos WHERE sala_id = ? ORDER BY fila, numero");
+        $stmt->execute([$sala_id]);
+        $asientos = $stmt->fetchAll();
+
+        require __DIR__ . '/../../resources/views/salas/asientos.php';
+    }
+
+    public function resumenCompra(): void
+{
+    session_start();
+    $db = Database::connect();
+
+    $ids = $_POST['asientos'] ?? [];
+
+    if (empty($ids)) {
+        echo "No seleccionaste asientos.";
+        exit;
+    }
+
+    // Evitar inyecciones
+    $in = str_repeat('?,', count($ids) - 1) . '?';
+    $stmt = $db->prepare("SELECT * FROM asientos WHERE id IN ($in)");
+    $stmt->execute($ids);
+    $asientos = $stmt->fetchAll();
+
+    $total = array_sum(array_column($asientos, 'precio'));
+
+    require __DIR__ . '/../../resources/views/compra/resumen.php';
 }
+
+}
+
+

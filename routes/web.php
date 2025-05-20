@@ -38,11 +38,19 @@ case '/salas':
     $salaCtrl->listar();
     break;
 
+case '/resumen-compra':
+    $salaCtrl->resumenCompra();
+    break;
+
 case (preg_match('#^/usuario/(\d+)$#', $uri, $matches) ? true : false):
     $id = (int) $matches[1];
     require_once __DIR__ . '/../app/Controllers/UsuarioController.php';
     $controller = new UsuarioController();
     $controller->mostrar($id);
+    break;
+
+case (preg_match('#^/sala/(\d+)$#', $uri, $matches) ? true : false):
+    $salaCtrl->verAsientos((int)$matches[1]);
     break;
 
     default:
