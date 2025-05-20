@@ -33,3 +33,4 @@
         <?php endforeach; ?>
     </table>
 <?php endif; ?>
+<a href="/usuario/<?= $usuario['id'] ?>/editar">✏️ Editar perfil</a>

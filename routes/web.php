@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../app/Controllers/AuthController.php';
 require_once __DIR__ . '/../app/Controllers/SalaController.php';
+require_once __DIR__ . '/../app/Controllers/UsuarioController.php';
+
 $auth = new AuthController();
 $salaCtrl = new SalaController();
 
@@ -55,6 +57,17 @@ case (preg_match('#^/usuario/(\d+)$#', $uri, $matches) ? true : false):
 
 case (preg_match('#^/sala/(\d+)$#', $uri, $matches) ? true : false):
     $salaCtrl->verAsientos((int)$matches[1]);
+    break;
+
+case (preg_match('#^/usuario/(\d+)/editar$#', $uri, $matches) ? true : false):
+    $id = (int) $matches[1];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $controller = new UsuarioController();
+        $controller->actualizar($id);
+    } else {
+        $controller = new UsuarioController();
+        $controller->editar($id);
+    }
     break;
 
 case '/cuenta-cine':

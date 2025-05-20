@@ -37,4 +37,51 @@ class UsuarioController
         require __DIR__ . '/../../resources/views/usuarios/show.php';
     }
 
+    public function editar(int $id): void
+    {
+        session_start();
+
+        if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_id'] !== $id) {
+            http_response_code(403);
+            echo "Acceso no autorizado.";
+            exit;
+        }
+
+        $db = Database::connect();
+        $stmt = $db->prepare("SELECT * FROM usuarios WHERE id = ?");
+        $stmt->execute([$id]);
+        $usuario = $stmt->fetch();
+
+        require __DIR__ . '/../../resources/views/usuarios/editar.php';
+    }
+
+    public function actualizar(int $id): void
+    {
+        session_start();
+
+        if (!isset($_SESSION['usuario_id']) || $_SESSION['usuario_id'] !== $id) {
+            http_response_code(403);
+            echo "Acceso no autorizado.";
+            exit;
+        }
+
+        $db = Database::connect();
+
+        $nombre = $_POST['nombre'] ?? '';
+        $apellidos = $_POST['apellidos'] ?? '';
+        $nick = $_POST['nick'] ?? '';
+        $email = $_POST['email'] ?? '';
+        $fecha_nacimiento = $_POST['fecha_nacimiento'] ?? '';
+
+        $stmt = $db->prepare("
+            UPDATE usuarios
+            SET nombre = ?, apellidos = ?, nick = ?, email = ?, fecha_nacimiento = ?
+            WHERE id = ?
+        ");
+        $stmt->execute([$nombre, $apellidos, $nick, $email, $fecha_nacimiento, $id]);
+
+        header("Location: /usuario/$id");
+        exit;
+    }
+
 }
