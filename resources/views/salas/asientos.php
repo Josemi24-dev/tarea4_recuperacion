@@ -1,3 +1,12 @@
+<h2>Filtrar asientos</h2>
+<form method="GET">
+    Mín precio: <input type="number" name="min" value="<?= $_GET['min'] ?? '' ?>" step="0.01"><br>
+    Máx precio: <input type="number" name="max" value="<?= $_GET['max'] ?? '' ?>" step="0.01"><br>
+    Posición (ej: A1, B): <input type="text" name="pos" value="<?= $_GET['pos'] ?? '' ?>"><br>
+    <button type="submit">Filtrar</button>
+</form>
+<hr>
+
 <h2>Asientos disponibles</h2>
 
 <form method="POST" action="/resumen-compra">

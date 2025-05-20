@@ -9,6 +9,8 @@
 </ul>
 
 <!-- Paginación -->
-<?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
-    <a href="/salas?p=<?= $i ?>"><?= $i ?></a>
-<?php endfor; ?>
+<nav>
+    <?php for ($i = 1; $i <= $totalPaginas; $i++): ?>
+        <a href="/salas?p=<?= $i ?>" <?= $i === $pagina ? 'style="font-weight:bold;"' : '' ?>><?= $i ?></a>
+    <?php endfor; ?>
+</nav>

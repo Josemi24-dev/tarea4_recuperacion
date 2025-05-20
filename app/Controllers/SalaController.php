@@ -10,7 +10,8 @@ class SalaController
         $db = Database::connect();
 
         // Paginación
-        $porPagina = 2;
+        $config = parse_ini_file(__DIR__ . '/../../config/paginacion.ini');
+        $porPagina = (int)($config['elementos_por_pagina'] ?? 2);
         $pagina = isset($_GET['p']) ? (int)$_GET['p'] : 1;
         $offset = ($pagina - 1) * $porPagina;
 
@@ -32,12 +33,37 @@ class SalaController
         session_start();
         $db = Database::connect();
 
-        $stmt = $db->prepare("SELECT * FROM asientos WHERE sala_id = ? ORDER BY fila, numero");
-        $stmt->execute([$sala_id]);
+        // --- BLOQUE DE FILTROS ---
+        $query = "SELECT * FROM asientos WHERE sala_id = :sala_id";
+        $params = ['sala_id' => $sala_id];
+
+        if (!empty($_GET['min'])) {
+            $query .= " AND precio >= :min";
+            $params['min'] = (float)$_GET['min'];
+        }
+
+        if (!empty($_GET['max'])) {
+            $query .= " AND precio <= :max";
+            $params['max'] = (float)$_GET['max'];
+        }
+
+        if (!empty($_GET['pos'])) {
+            // Filtro por posición usando LIKE
+            $query .= " AND CONCAT(fila, numero) LIKE :pos";
+            $params['pos'] = '%' . $_GET['pos'] . '%';
+        }
+
+        $query .= " ORDER BY fila, numero";
+        // ----------------------------
+
+        // Ejecutar la consulta con parámetros
+        $stmt = $db->prepare($query);
+        $stmt->execute($params);
         $asientos = $stmt->fetchAll();
 
         require __DIR__ . '/../../resources/views/salas/asientos.php';
     }
+
 
     public function resumenCompra(): void
     {
