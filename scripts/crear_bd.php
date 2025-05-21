@@ -1,17 +1,27 @@
+<!-- Fichero que crea e introduce desde cero en la base de datos tarea4recuperacion2:
+-Usuarios (100)
+-Salas (3)
+-Asientos (por sala)
+-Entradas (estructura)
+-Cuenta del cine
+-->
+
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../config/database.php';
 
+// Nos conectamos al servidor mysql a nivel root (sin especificar base de datos)
 $db = new PDO('mysql:host=localhost;charset=utf8mb4', 'root', '');
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Crear base si no existe
+// Crear base de datos si no existe
 $db->exec("CREATE DATABASE IF NOT EXISTS tarea4recuperacion2 CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
+// Seleccionamos la base de datos creada
 $db->exec("USE tarea4recuperacion2");
 
-// Tabla usuarios
+// Eliminamos las posibles tablas 
 $db->exec("DROP TABLE IF EXISTS entradas, asientos, salas, cuenta_cine, usuarios");
 
+// Tabla usuarios
 $db->exec("
     CREATE TABLE usuarios (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -66,14 +76,16 @@ $db->exec("
     );
 ");
 
+// Inicializamos la tabla cuenta_cine
 $db->exec("INSERT INTO cuenta_cine (id, saldo_total) VALUES (1, 0.00)");
 
-// Insertar usuarios
+// Preparamos la sentencia de inserción de usuarios
 $stmt = $db->prepare("
     INSERT INTO usuarios (nombre, apellidos, nick, email, fecha_nacimiento, password, saldo)
     VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 
+// Insertamos 100 usuarios de prueba
 for ($i = 1; $i <= 100; $i++) {
     $nombre = "Usuario$i";
     $apellidos = "Apellido$i";
@@ -93,10 +105,11 @@ $db->exec("INSERT INTO salas (nombre) VALUES ('Sala A'), ('Sala B'), ('Sala C')"
 $salas = $db->query("SELECT id FROM salas")->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($salas as $sala) {
+    // Consultamos los ids de cada sala para insertar sus respectivos asientos
     $sala_id = $sala['id'];
-    foreach (range('A', 'E') as $fila) {
-        for ($n = 1; $n <= 10; $n++) {
-            $precio = rand(5, 10);
+    foreach (range('A', 'E') as $fila) {    // Creamos 5 filas, de la A a la E
+        for ($n = 1; $n <= 10; $n++) {   // 10 columnas por fila
+            $precio = rand(5, 10);  
             $db->prepare("INSERT INTO asientos (sala_id, fila, numero, precio) VALUES (?, ?, ?, ?)")
                 ->execute([$sala_id, $fila, $n, $precio]);
         }

@@ -1,11 +1,47 @@
-# 🎬 Proyecto Tarea 4 - Compra de Entradas de Cine
+# 🎬 Tarea 4 - Recuperación (DAW 2º)
 
-Aplicación web en PHP orientada a objetos con arquitectura MVC.  
-Permite gestionar usuarios, salas de cine, compra de entradas y transacciones seguras.
+Aplicación PHP desarrollada siguiendo el patrón MVC. Permite la compra de entradas para un cine con gestión de salas, transacciones seguras y sistema de usuarios.
 
-## 📁 Estructura
-- `app/` → Modelos y lógica
-- `public/` → Archivos públicos (index.php)
-- `routes/` → Definición de rutas
-- `resources/views` → Vistas
+## 🔧 Tecnologías
+
+- PHP 8+
+- HTML/CSS
+- PDO + MySQL
+- Patrón MVC
+- Git + GitHub
+
+## 🧩 Estructura del Proyecto
+Tarea4_Recu/
+├── app/
+│ └── Controllers/
+│ └── Models/ (vacío)
+├── config/
+├── public/
+├── resources/views/
+├── routes/
+├── scripts/
+
+
+## ✅ Funcionalidades
+
+- Registro y login con hash de contraseña
+- Panel privado con historial de entradas
+- Salas paginadas
+- Filtros avanzados por precio y posición
+- Compra múltiple de entradas con transacción
+- Gestión de precios y cantidad de asientos por sala
+
+## ⚙️ Instalación
+
+1. Clona el repositorio
+2. Configura un virtualhost con `public/` como DocumentRoot
+3. Accede a `http://localhost/crear-bd` para generar la base de datos
+
+## 🧪 Acceso de prueba
+
+- **Email:** `user1@example.com`
+- **Contraseña:** `clave1`
+
+## 📘 Autor
+-José Miguel Arenas Gallardo
 
