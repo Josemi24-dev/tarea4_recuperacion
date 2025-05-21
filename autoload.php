@@ -1,12 +1,13 @@
+<!-- Fichero que se encarga de cargar automáticamente las 
+ clases PHP necesarias -->
+
 <?php
 declare(strict_types=1);
 
 spl_autoload_register(function ($class) {
     $paths = [
-        'app/Models/',
-        'app/Controllers/',
-        'app/Entities/',
-        'core/'
+        __DIR__ . '/app/Controllers/',
+        __DIR__ . '/config/',
     ];
 
     foreach ($paths as $path) {
